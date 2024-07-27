@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ITask } from "../../../types/tasks";
+import { ITask } from "../types/tasks";
 import Task from "./task";
 
 interface TodoListProps {
@@ -19,9 +19,9 @@ const TodoList: React.FC<TodoListProps> = ({ tasks }) => {
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task) => (
-            <Task key={task._id} task={task} />
-          ))}
+          {Array.isArray(tasks)
+            ? tasks.map((task) => <Task key={task._id} task={task} />)
+            : null}
         </tbody>
       </table>
     </div>

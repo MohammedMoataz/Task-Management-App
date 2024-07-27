@@ -31,6 +31,7 @@ export class AuthService {
     );
     if (!isPasswordMatchs) return null;
 
+    user.set('refresh_token', null)
     const tokens = await this.getTokens(user);
 
     await this.userService.updateRefreshToken(user._id, tokens.refresh_token);

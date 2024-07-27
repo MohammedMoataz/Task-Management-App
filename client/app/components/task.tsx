@@ -5,8 +5,8 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import Modal from "./modal";
 import { useRouter } from "next/navigation";
 
-import { deleteTask, editTask } from "@/api";
-import { ITask } from "../../../types/tasks";
+import { deleteTask, editTask } from "@/app/api/api";
+import { ITask } from "../types/tasks";
 
 interface TaskProps {
   task: ITask;

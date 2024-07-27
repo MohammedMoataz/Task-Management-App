@@ -7,73 +7,43 @@ export class LinkedInScraperService {
   private driver: WebDriver;
 
   constructor() {
+    const options = new chrome.Options();
+    options.addArguments('--disable-extensions');
+    options.addArguments('--disable-popup-blocking');
+    options.addArguments('--profile-directory=Default');
+    options.addArguments('--disable-plugins-discovery');
+
     this.driver = new WebDriver.Builder()
       .forBrowser('chrome')
-      .setChromeOptions(new chrome.Options())
+      .setChromeOptions(options)
       .build();
   }
 
   async scrapeProfile(url: string): Promise<any> {
     await this.driver.get(url);
-
-    // Wait for the profile name element to be loaded
-    const nameElement = await this.driver.wait(
-      WebDriver.until.elementLocated(WebDriver.By.css('.text-heading-xlarge')),
-      10000,
+    await this.driver.manage().setTimeouts({ implicit: 1000000 });
+    const profileSection = await this.driver.findElement(
+      WebDriver.By.css('.pv-top-card'),
     );
-    const name = await nameElement.getText();
+    const name = await profileSection
+      .findElement(
+        WebDriver.By.css(
+          '.text-heading-xlarge inline t-24 v-align-middle break-words h1',
+        ),
+      )
+      .getText();
+    const title = await profileSection
+      .findElement(
+        WebDriver.By.css(
+          '.ph5 .relative .pv-text-details__left-panel .text-body-medium',
+        ),
+      )
+      .getText();
+    const location = await profileSection
+      .findElement(WebDriver.By.css('.ph5 .relative .mt2 span'))
+      .getText();
 
-    // Extract headline
-    const headlineElement = await this.driver.wait(
-      WebDriver.until.elementLocated(
-        WebDriver.By.css('.text-body-medium.break-words'),
-      ),
-      10000,
-    );
-    const headline = await headlineElement.getText();
-
-    // Extract location
-    const locationElement = await this.driver.wait(
-      WebDriver.until.elementLocated(
-        WebDriver.By.css('.text-body-small.inline.t-black--light.break-words'),
-      ),
-      10000,
-    );
-    const location = await locationElement.getText();
-
-    // Extract education
-    const educationElement = await this.driver.wait(
-      WebDriver.until.elementLocated(
-        WebDriver.By.css('.WEXImBnPdRlAqDtIDKjpcvExRsSlTfsNlubgdqbgo'),
-      ),
-      10000,
-    );
-    const education = await educationElement.getText();
-
-    // Extract connections
-    const connectionsElement = await this.driver.wait(
-      WebDriver.until.elementLocated(WebDriver.By.css('.t-bold')),
-      10000,
-    );
-    const connections = await connectionsElement.getText();
-
-    // Close the driver
-    await this.driver.quit();
-
-    console.log({
-      name,
-      headline,
-      location,
-      education,
-      connections,
-    });
-
-    return {
-      name,
-      headline,
-      location,
-      education,
-      connections,
-    };
+    console.log({ name, title, location });
+    return { name, title, location };
   }
 }
