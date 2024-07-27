@@ -55,7 +55,9 @@ export class UserService {
 
     updatedUser.updatedAt = new Date();
 
-    const result = await this.userModel.updateOne({ id }, updatedUser).exec();
+    const result = await this.userModel
+      .updateOne({ _id: id }, updatedUser)
+      .exec();
     if (!result) throw new Error('Failed Operation, Try again later!');
 
     return 'User was updated successfully';
@@ -66,7 +68,7 @@ export class UserService {
     if (!user) throw new Error('User not found');
 
     const result = await this.userModel
-      .updateOne({ id }, { refresh_token })
+      .updateOne({ _id: id }, { refresh_token })
       .exec();
     if (!result) throw new Error('Failed Operation, Try again later!');
 
@@ -74,7 +76,7 @@ export class UserService {
   }
 
   async remove(id: string): Promise<string> {
-    const result = await this.userModel.deleteOne({ id }).exec();
+    const result = await this.userModel.deleteOne({ _id: id }).exec();
     if (!result) throw new Error('User not found');
 
     return 'User was deleted successfully';

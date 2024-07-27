@@ -1,7 +1,6 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
 export const User = new Schema({
-  id: { type: mongoose.Schema.Types.ObjectId, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },

@@ -5,6 +5,7 @@ import { Task } from 'src/schemas/task.schema';
 import { TaskService } from 'src/services/task/task.service';
 import { TaskController } from 'src/controllers/task/task.controller';
 import { UserModule } from '../user/user.module';
+// import { AuthModule } from 'src/auth/module/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UserModule } from '../user/user.module';
       { name: 'Task', schema: Task, collection: 'task' },
     ]),
     UserModule,
+    // AuthModule,
   ],
   controllers: [TaskController],
   providers: [TaskService],

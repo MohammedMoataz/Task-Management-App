@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 
 export class TaskDto {
@@ -5,7 +6,7 @@ export class TaskDto {
     Object.assign(this, partial);
   }
 
-  id: string;
+  _id: string;
   title: string;
   description: string;
   category: 'Work' | 'Personal' | 'Shopping';
@@ -17,6 +18,12 @@ export class TaskDto {
 }
 
 export class CreateTaskDto {
+  constructor(partial: CreateTaskDto) {
+    Object.assign(this, partial);
+  }
+
+  @Exclude()
+  _id: string;
   @IsNotEmpty()
   title: string;
   @IsNotEmpty()

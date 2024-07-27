@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  // UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import {
 import { UserService } from 'src/services/user/user.service';
 import { CreateUserDto, UpdateUserDto, UserDto } from 'src/DTOs/user.dto';
 import { LinkedInScraperService } from 'src/scraping/linkedin-scraper.service';
+// import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('/user')
 export class UserController {
@@ -22,14 +24,14 @@ export class UserController {
 
   @Get('all')
   @UsePipes(ValidationPipe)
-  // @UseGuards(JWTAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getUsers(): Promise<UserDto[]> {
     return this.userService.findAll();
   }
 
   @Get()
   @UsePipes(ValidationPipe)
-  // @UseGuards(JWTAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getUser(@Query('id') id: string): Promise<UserDto> {
     const user = this.userService.findOneById(id);
 
@@ -60,7 +62,9 @@ export class UserController {
   ): Promise<any> {
     return this.userService
       .update(id, updatedUser)
-      .then(() => 'User was updated successfully')
+      .then(() => {
+        return { message: 'User was updated successfully' };
+      })
       .catch((err) => err.message);
   }
 
@@ -69,7 +73,9 @@ export class UserController {
   async removeUser(@Query('id') id: string): Promise<any> {
     return this.userService
       .remove(id)
-      .then(() => 'User was deleted successfully')
+      .then(() => {
+        return { message: 'User was deleted successfully' };
+      })
       .catch((err) => err.message);
   }
 }

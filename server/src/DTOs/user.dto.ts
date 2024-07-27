@@ -31,7 +31,6 @@ export class CreateUserDto {
   title: string;
   address: string;
   picture: string;
-  refresh_token: string;
   createdAt: Date;
 }
 

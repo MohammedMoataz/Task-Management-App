@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Injectable, Dependencies } from '@nestjs/common';
 import { getModelToken, InjectModel } from '@nestjs/mongoose';
 import { plainToClass } from 'class-transformer';
@@ -13,18 +13,20 @@ export class TaskService {
     @InjectModel('Task') private readonly taskModel: Model<TaskSchema>,
   ) { }
 
-  async create(createTaskDto: CreateTaskDto): Promise<TaskDto> {
-    const createdTask = new this.taskModel(createTaskDto);
+  async create(createTaskDto: CreateTaskDto): Promise<TaskSchema> {
+    const createdTask = new this.taskModel(
+      plainToClass(CreateTaskDto, createTaskDto),
+    );
     const newTask = await createdTask.save();
 
-    return plainToClass(TaskDto, newTask);
+    return newTask;
   }
 
-  async findAll(): Promise<TaskDto[]> {
+  async findAll(): Promise<TaskSchema[]> {
     const tasks = await this.taskModel.find().exec();
     if (!tasks || tasks.length === 0) throw new Error('Task not found');
 
-    return tasks.map((task) => plainToClass(TaskDto, task));
+    return tasks;
   }
 
   async findOneById(id: string): Promise<TaskDto> {
@@ -35,19 +37,20 @@ export class TaskService {
   }
 
   async update(id: string, updatedTask: UpdateTaskDto): Promise<string> {
-    const task = await this.taskModel.findById(id).exec();
+    const task = await this.taskModel.findById(new Types.ObjectId(id)).exec();
     if (!task) throw new Error('Task not found');
-
     updatedTask.updatedAt = new Date();
 
-    const result = await this.taskModel.updateOne({ id }, updatedTask).exec();
+    const result = await this.taskModel
+      .updateOne({ _id: id }, updatedTask)
+      .exec();
     if (!result) throw new Error('Failed Operation, Try again later!');
 
     return 'Task was updated successfully';
   }
 
   async remove(id: string): Promise<string> {
-    const result = await this.taskModel.deleteOne({ id }).exec();
+    const result = await this.taskModel.deleteOne({ _id: id }).exec();
     if (!result) throw new Error('Task not found');
 
     return 'Task was deleted successfully';
