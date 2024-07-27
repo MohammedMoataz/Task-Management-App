@@ -8,31 +8,30 @@ import {
   Post,
   Put,
   Query,
-  // UseGuards,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
 
 import { CreateTaskDto, TaskDto, UpdateTaskDto } from 'src/DTOs/task.dto';
 import { TaskSchema } from 'src/schemas/task.schema';
 import { TaskService } from 'src/services/task/task.service';
-// import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('/task')
 export class TaskController {
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService) { }
 
   @Get('all')
   @UsePipes(ValidationPipe)
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async getTasks(): Promise<TaskSchema[]> {
     return this.taskService.findAll();
   }
 
   @Get()
   @UsePipes(ValidationPipe)
-  // @UseGuards(JWTAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async getTask(@Query('id') id: string): Promise<TaskDto> {
     const task = this.taskService.findOneById(id);
 
@@ -42,13 +41,14 @@ export class TaskController {
 
   @Post()
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   async createTask(@Body() newTask: CreateTaskDto): Promise<TaskSchema> {
-    console.log({ newTask });
-    return this.taskService.create(plainToClass(CreateTaskDto, newTask));
+    return this.taskService.create(newTask);
   }
 
   @Put()
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   async updateTask(
     @Query('id') id: string,
     @Body() updatedTask: UpdateTaskDto,
@@ -63,6 +63,7 @@ export class TaskController {
 
   @Delete()
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   async removeTask(@Query('id') id: string): Promise<any> {
     return this.taskService
       .remove(id)

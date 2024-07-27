@@ -56,6 +56,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   @Post('refreshtoken')
   async refreshToken(@Req() req: Request) {
     const user = req.body.user;
@@ -66,7 +67,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(RTGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Req() req: Request): Promise<string> {
     const user = req.body.user;

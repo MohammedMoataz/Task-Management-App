@@ -12,7 +12,6 @@ const PORT = process.env.PORT || 4000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  // app.useGlobalGuards(new ATGuard())
   app.enableCors();
   app.use(helmet());
 

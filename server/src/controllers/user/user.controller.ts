@@ -8,7 +8,7 @@ import {
   Post,
   Put,
   Query,
-  // UseGuards,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,7 +16,7 @@ import {
 import { UserService } from 'src/services/user/user.service';
 import { CreateUserDto, UpdateUserDto, UserDto } from 'src/DTOs/user.dto';
 import { LinkedInScraperService } from 'src/scraping/linkedin-scraper.service';
-// import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('/user')
 export class UserController {
@@ -24,14 +24,14 @@ export class UserController {
 
   @Get('all')
   @UsePipes(ValidationPipe)
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async getUsers(): Promise<UserDto[]> {
     return this.userService.findAll();
   }
 
   @Get()
   @UsePipes(ValidationPipe)
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async getUser(@Query('id') id: string): Promise<UserDto> {
     const user = this.userService.findOneById(id);
 
@@ -42,8 +42,9 @@ export class UserController {
   @Get('/scrape')
   @UsePipes(ValidationPipe)
   async scrapeUser(@Query('url') url: string): Promise<any> {
-    const user = await LinkedInScraperService.scrapeProfile(url);
+    const user = await new LinkedInScraperService().scrapeProfile(url);
 
+    console.log({ user });
     if (user) return user;
     else throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
@@ -56,6 +57,7 @@ export class UserController {
 
   @Put()
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   async updateUser(
     @Query('id') id: string,
     @Body() updatedUser: UpdateUserDto,
@@ -70,6 +72,7 @@ export class UserController {
 
   @Delete()
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   async removeUser(@Query('id') id: string): Promise<any> {
     return this.userService
       .remove(id)
