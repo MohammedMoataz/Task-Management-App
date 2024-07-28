@@ -1,3 +1,4 @@
+'use client';
 import { useState } from "react";
 
 const SignIn = () => {
@@ -6,7 +7,6 @@ const SignIn = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign-in logic here
     console.log("Email:", email);
     console.log("Password:", password);
   };
@@ -24,7 +24,6 @@ const SignIn = () => {
         onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", width: "300px" }}
       >
-        <h2>Sign In</h2>
         <label htmlFor="email">Email:</label>
         <input
           type="email"

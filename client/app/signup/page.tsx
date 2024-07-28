@@ -12,7 +12,6 @@ const SignUp = () => {
       alert("Passwords do not match!");
       return;
     }
-    // Handle sign-up logic here
     console.log("Email:", email);
     console.log("Password:", password);
   };
@@ -30,7 +29,6 @@ const SignUp = () => {
         onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", width: "300px" }}
       >
-        <h2>Sign Up</h2>
         <label htmlFor="email">Email:</label>
         <input
           type="email"
