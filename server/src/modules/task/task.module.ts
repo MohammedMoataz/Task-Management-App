@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
 
-import { Task } from 'src/schemas/task.schema';
-import { TaskService } from 'src/services/task/task.service';
-import { TaskController } from 'src/controllers/task/task.controller';
-import { UserModule } from '../user/user.module';
-// import { AuthModule } from 'src/auth/module/auth.module';
+import { Task } from 'src/schemas/task.schema'
+import { TaskService } from 'src/services/task/task.service'
+import { TaskController } from 'src/controllers/task/task.controller'
+import { UserModule } from '../user/user.module'
+// import { AuthModule } from 'src/auth/module/auth.module'
 
 @Module({
   imports: [

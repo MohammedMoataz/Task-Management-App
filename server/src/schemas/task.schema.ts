@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose'
 
 export const Task = new Schema({
   title: { type: String, required: true },
@@ -9,6 +9,6 @@ export const Task = new Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   createdAt: { type: Date, default: Date.now, required: true },
   updatedAt: { type: Date, required: false },
-});
+})
 
-export type TaskSchema = typeof Task & Document;
+export type TaskSchema = typeof Task & Document

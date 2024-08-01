@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
 
-import { User } from 'src/schemas/user.schema';
-import { UserService } from 'src/services/user/user.service';
-import { UserController } from 'src/controllers/user/user.controller';
-import { LinkedInScraperService } from 'src/scraping/linkedin-scraper.service';
-// import { AuthModule } from 'src/auth/module/auth.module';
+import { User } from 'src/schemas/user.schema'
+import { UserService } from 'src/services/user/user.service'
+import { UserController } from 'src/controllers/user/user.controller'
+import { LinkedInScraperService } from 'src/scraping/linkedin-scraper.service'
+// import { AuthModule } from 'src/auth/module/auth.module'
 
 @Module({
   imports: [

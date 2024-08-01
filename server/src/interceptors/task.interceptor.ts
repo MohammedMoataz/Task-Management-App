@@ -3,11 +3,11 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
-import { map, Observable } from 'rxjs';
+} from '@nestjs/common'
+import { plainToClass } from 'class-transformer'
+import { map, Observable } from 'rxjs'
 
-import { TaskDto } from 'src/DTOs/task.dto';
+import { TaskDto } from 'src/DTOs/task.dto'
 
 @Injectable()
 export class CreateTaskInterceptor implements NestInterceptor {
@@ -16,6 +16,6 @@ export class CreateTaskInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Observable<any> | Promise<Observable<any>> {
     // return next.handle().pipe(map(task => plainToClass(TaskDto, task)))
-    return next.handle();
+    return next.handle()
   }
 }

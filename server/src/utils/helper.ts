@@ -1,12 +1,12 @@
-import * as bcrypt from 'bcrypt';
-import { sign, verify, JwtPayload } from 'jsonwebtoken';
-import { config } from 'dotenv';
+import * as bcrypt from 'bcrypt'
+import { sign, verify, JwtPayload } from 'jsonwebtoken'
+import { config } from 'dotenv'
 
-config();
+config()
 
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string;
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string;
-const SALT_ROUNDS = process.env.SALT_ROUNDS as string;
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET as string
+const SALT_ROUNDS = process.env.SALT_ROUNDS as string
 
 /**
  * Encrypts a payload using bcrypt.
@@ -21,26 +21,26 @@ export const hashData = async (
   callback?: (err: Error | null, encrypted: string) => void,
 ): Promise<string> => {
   // Generate a salt with the specified number of rounds.
-  const saltRounds = parseInt(SALT_ROUNDS);
+  const saltRounds = parseInt(SALT_ROUNDS)
   const salt = await new Promise<string>((resolve, reject) => {
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-      err ? reject(err) : resolve(salt);
-    });
-  });
+    bcrypt.genSalt(saltRounds, (err: any, salt: string | PromiseLike<string>) => {
+      err ? reject(err) : resolve(salt)
+    })
+  })
 
   // Generate the hashed payload using the generated salt.
   return new Promise<string>((resolve, reject) => {
     bcrypt.hash(payload, salt, (err, encrypted) => {
-      err ? reject(err) : resolve(encrypted);
-    });
+      err ? reject(err) : resolve(encrypted)
+    })
   }).then((encrypted) => {
     // If a callback was specified, call it with the encrypted payload.
-    if (callback) callback(null, encrypted);
+    if (callback) callback(null, encrypted)
 
     // Always return the encrypted payload.
-    return encrypted;
-  });
-};
+    return encrypted
+  })
+}
 
 /**
  * Compares a piece of data against a hash to see if the hash is relevant to the data.
@@ -55,7 +55,7 @@ export const hashData = async (
 export const compareHashedData = async (
   data: string,
   encrypted: string,
-): Promise<boolean> => await bcrypt.compare(data, encrypted);
+): Promise<boolean> => await bcrypt.compare(data, encrypted)
 
 /**
  * Synchronously sign the given payload into a JSON Web Token string
@@ -79,8 +79,8 @@ export const generateAccessToken = (
     ACCESS_TOKEN_SECRET, // Secret to sign the payload with
     { expiresIn: '7d' }, // Expiration time of the token
     (err, token) => callback(err, token), // Callback function
-  );
-};
+  )
+}
 
 /**
  * Synchronously sign the given payload into a JSON Web Token string
@@ -104,8 +104,8 @@ export const generateRefreshToken = (
     REFRESH_TOKEN_SECRET, // Secret to sign the payload with
     { expiresIn: '7d' }, // Expiration time of the token
     (err, token) => callback(err, token), // Callback function
-  );
-};
+  )
+}
 
 /**
  * Synchronously verify given token using a secret or a public key to get a decoded token
@@ -126,7 +126,7 @@ export const verifyToken = (
     ACCESS_TOKEN_SECRET, // Secret or public key to verify the token with
     { complete: true }, // Options for verification (see https://github.com/auth0/node-jsonwebtoken)
     (err, decoded) => callback(err, decoded), // Callback function
-  );
+  )
 
 /**
  * Synchronously verify given token using a secret or a public key to get a decoded token
@@ -147,4 +147,4 @@ export const verifyRefreshToken = (
     REFRESH_TOKEN_SECRET, // Secret or public key to verify the token with
     { complete: true }, // Options for verification (see https://github.com/auth0/node-jsonwebtoken)
     (err, decoded) => callback(err, decoded), // Callback function
-  );
+  )

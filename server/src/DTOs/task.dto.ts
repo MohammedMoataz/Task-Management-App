@@ -1,49 +1,49 @@
-import { Exclude } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
+import { Exclude } from 'class-transformer'
+import { IsNotEmpty } from 'class-validator'
 
 export class TaskDto {
   constructor(partial: TaskDto) {
-    Object.assign(this, partial);
+    Object.assign(this, partial)
   }
 
-  _id: string;
-  title: string;
-  description: string;
-  category: 'Work' | 'Personal' | 'Shopping';
-  completed: string;
-  due_date: string;
-  owner: string;
-  createdAt: Date;
-  updatedAt: Date;
+  _id: string
+  title: string
+  description: string
+  category: 'Work' | 'Personal' | 'Shopping'
+  completed: string
+  due_date: string
+  owner: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export class CreateTaskDto {
   constructor(partial: CreateTaskDto) {
-    Object.assign(this, partial);
+    Object.assign(this, partial)
   }
 
   @Exclude()
-  _id: string;
+  _id: string
   @IsNotEmpty()
-  title: string;
+  title: string
   @IsNotEmpty()
-  description: string;
+  description: string
   @IsNotEmpty()
-  category: 'Work' | 'Personal' | 'Shopping';
-  completed: string;
+  category: 'Work' | 'Personal' | 'Shopping'
+  completed: string
   @IsNotEmpty()
-  due_date: string;
+  due_date: string
   @IsNotEmpty()
-  owner: string;
-  createdAt: Date;
+  owner: string
+  createdAt: Date
 }
 
 export class UpdateTaskDto {
-  title: string;
-  description: string;
-  category: 'Work' | 'Personal' | 'Shopping';
-  completed: string;
-  due_date: string;
-  owner: string;
-  updatedAt: Date;
+  title: string
+  description: string
+  category: 'Work' | 'Personal' | 'Shopping'
+  completed: string
+  due_date: string
+  owner: string
+  updatedAt: Date
 }
