@@ -14,7 +14,7 @@ This is the backend for the Task Management App, built with NestJS.
 
    ```bash
    git clone https://github.com/MohammedMoataz/Task-Management-App.git
-   cd task-management-app/server
+   cd Task-Management-App/server
 
 2. **Install dependencies:**
    npm install
@@ -38,7 +38,7 @@ This is the frontend for the Task Management App, built with Next.js.
 
    ```bash
    git clone https://github.com/MohammedMoataz/Task-Management-App.git
-   cd task-management-app/client
+   cd Task-Management-App/client
 
 2. **Install dependencies:**
    
