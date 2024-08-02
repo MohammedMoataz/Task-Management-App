@@ -25,7 +25,7 @@ export class SignUpDto {
   @MinLength(8, { message: 'Password is too short' })
   password: string
   title: string
-  address: string
+  about: string
   picture: string
   refresh_token: string
   createdAt: Date

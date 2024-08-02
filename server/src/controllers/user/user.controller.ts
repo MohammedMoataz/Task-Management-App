@@ -42,7 +42,7 @@ export class UserController {
   @Get('/scrape')
   @UsePipes(ValidationPipe)
   async scrapeUser(@Query('url') url: string): Promise<any> {
-    const user = await new LinkedInScraperService().scrapeProfile(url)
+    const user = await LinkedInScraperService.scrapeProfile(url)
 
     console.log({ user })
     if (user) return user

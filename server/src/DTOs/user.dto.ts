@@ -12,7 +12,7 @@ export class UserDto {
   @Exclude()
   password: string
   title: string
-  address: string
+  about: string
   picture: string
   refresh_token: string
   createdAt: Date
@@ -29,7 +29,7 @@ export class CreateUserDto {
   @MinLength(8, { message: 'Password is too short' })
   password: string
   title: string
-  address: string
+  about: string
   picture: string
   createdAt: Date
 }
@@ -39,7 +39,7 @@ export class UpdateUserDto {
   email: string
   password: string
   title: string
-  address: string
+  about: string
   picture: string
   refresh_token: string
   updatedAt: Date

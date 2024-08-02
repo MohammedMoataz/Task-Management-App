@@ -5,7 +5,7 @@ export const User = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   title: { type: String, required: false },
-  address: { type: String, required: false },
+  about: { type: String, required: false },
   picture: { type: String, required: false },
   refresh_token: { type: String, required: false },
   createdAt: { type: Date, default: Date.now, required: true },

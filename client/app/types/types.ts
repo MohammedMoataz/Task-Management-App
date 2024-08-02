@@ -11,7 +11,7 @@ export interface IUser {
   linkedin_url: string;
   picture: string;
   title: string;
-  address: string;
+  about: string;
 }
 
 export interface ITask {

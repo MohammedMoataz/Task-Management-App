@@ -24,7 +24,7 @@ const SignUp = () => {
       linkedin_url: "",
       picture: "",
       title: "",
-      address: "",
+      about: "",
     });
 
     console.log(tokens);
