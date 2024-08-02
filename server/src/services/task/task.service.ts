@@ -13,11 +13,16 @@ export class TaskService {
     @InjectModel('Task') private readonly taskModel: Model<TaskSchema>,
   ) { }
 
-  async create(createTaskDto: CreateTaskDto): Promise<TaskSchema> {
+  async create(createTaskDto: CreateTaskDto, userId: string): Promise<TaskSchema> {
+    console.log({ userId })
+    createTaskDto.owner = userId
     const createdTask = new this.taskModel(
       plainToClass(CreateTaskDto, createTaskDto),
     )
+    console.log({ createdTask })
+
     const newTask = await createdTask.save()
+    console.log({ newTask })
 
     return newTask
   }

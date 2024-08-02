@@ -87,6 +87,10 @@ export class AuthService {
     return 'Logged out successfully'
   }
 
+  async decodeToken(token: string): Promise<any> {
+    return await this.jwtService.decode(token)
+  }
+
   private async getTokens(user: UserSchema | UserDto): Promise<Tokens> {
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(
