@@ -28,8 +28,9 @@ export class TaskController {
   @Get('all')
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
-  async getTasks(): Promise<TaskSchema[]> {
-    return this.taskService.findAll()
+  async getTasks(@Req() req: Request): Promise<TaskSchema[]> {
+    const user = req.user["payload"]
+    return this.taskService.findAll(user["_id"])
   }
 
   @Get()

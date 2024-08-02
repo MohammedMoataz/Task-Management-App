@@ -1,19 +1,34 @@
-'use client';
-import { useState } from "react";
+"use client";
+import {  useState } from "react";
+import { signUp } from "../api/api";
 
 const SignUp = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [linkedinUrl, setLinkedinUrl] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    const tokens = await signUp({
+      id: "",
+      name,
+      email,
+      password,
+      linkedin_url: "",
+      picture: "",
+      title: "",
+      address: "",
+    });
+
+    console.log(tokens);
+    localStorage.setItem('token', tokens.tokens.access_token); // Save token to local storage
   };
 
   return (
@@ -29,6 +44,14 @@ const SignUp = () => {
         onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", width: "300px" }}
       >
+        <label htmlFor="name">Name:</label>
+        <input
+          type="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
         <label htmlFor="email">Email:</label>
         <input
           type="email"
@@ -51,6 +74,14 @@ const SignUp = () => {
           id="confirmPassword"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+        <label htmlFor="linkedinUrl">Linkedin URL:</label>
+        <input
+          type="text"
+          id="linkedinUrl"
+          value={linkedinUrl}
+          onChange={(e) => setLinkedinUrl(e.target.value)}
           required
         />
         <button type="submit">Sign Up</button>

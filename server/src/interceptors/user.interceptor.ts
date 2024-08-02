@@ -7,7 +7,7 @@ import {
 import { plainToClass } from 'class-transformer'
 import { map, Observable } from 'rxjs'
 
-import { UserDto } from 'src/DTOs/user.dto'
+import { CreateUserDto } from 'src/DTOs/user.dto'
 
 @Injectable()
 export class CreateUserInterceptor implements NestInterceptor {
@@ -15,7 +15,10 @@ export class CreateUserInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<any> | Promise<Observable<any>> {
-    // return next.handle().pipe(map(user => plainToClass(UserDto, user)))
+    const req = context.switchToHttp().getRequest()
+    const user = plainToClass(CreateUserDto, req.body)
+    console.log({ user })
+
     return next.handle()
   }
 }

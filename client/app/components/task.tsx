@@ -6,7 +6,7 @@ import Modal from "./modal";
 import { useRouter } from "next/navigation";
 
 import { deleteTask, editTask } from "@/app/api/api";
-import { ITask } from "../types/tasks";
+import { ITask } from "../types/types";
 
 interface TaskProps {
   task: ITask;
@@ -30,21 +30,24 @@ const Task: React.FC<TaskProps> = ({ task }) => {
 
   const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    await editTask({
-      _id: task._id,
-      title: titleToEdit,
-      description: descriptionToEdit,
-      category: categoryToEdit,
-      completed: completedToEdit,
-      due_date: due_dateToEdit,
-      owner: task.owner,
-    });
+    await editTask(
+      {
+        _id: task._id,
+        title: titleToEdit,
+        description: descriptionToEdit,
+        category: categoryToEdit,
+        completed: completedToEdit,
+        due_date: due_dateToEdit,
+        owner: task.owner,
+      },
+      `${localStorage.getItem("token")}`
+    );
     setOpenModalEdit(false);
     router.refresh();
   };
 
   const handleDeleteTask = async (id: string) => {
-    await deleteTask(id);
+    await deleteTask(id, `${localStorage.getItem("token")}`);
     setOpenModalDeleted(false);
     router.refresh();
   };
@@ -62,11 +65,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
         <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
           <form onSubmit={handleSubmitEditTodo}>
             <h3 className="font-bold text-lg">Edit task</h3>
-            <p>{task.category}</p>
-            <p>{task.completed}</p>
-            <p>{task.description}</p>
-            <p>{task.due_date.toString()}</p>
-            <div className="modal-action">
+            <div className="text-center my-5 flex flex-col gap-4">
               <input
                 value={titleToEdit}
                 onChange={(e) => setTitleToEdit(e.target.value)}

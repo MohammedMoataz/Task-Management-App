@@ -16,15 +16,18 @@ const AddTask = () => {
 
   const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    await addTask({
-      _id: "",
-      title,
-      description,
-      category,
-      completed: false,
-      due_date,
-      owner: "66a2d7730f3068f99be8937d",
-    });
+    await addTask(
+      {
+        _id: "",
+        title,
+        description,
+        category,
+        completed: false,
+        due_date,
+        owner: "66abf260ab73f99a5c7232b4",
+      },
+      `${localStorage.getItem("token")}`
+    );
     setTitle("");
     setDescription("");
     setCategory("");
@@ -45,19 +48,19 @@ const AddTask = () => {
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <form onSubmit={handleSubmitNewTodo}>
           <h3 className="font-bold text-lg">Add new task</h3>
-          <div className="modal-action">
+          <div className="modal-action flex flex-col space-y-4 items-center">
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               type="text"
-              placeholder="Type here"
+              placeholder="Title"
               className="input input-bordered w-full"
             />
             <input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               type="text"
-              placeholder="Type here"
+              placeholder="Description"
               className="input input-bordered w-full"
             />
             <input

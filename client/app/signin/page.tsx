@@ -1,14 +1,21 @@
-'use client';
+"use client";
 import { useState } from "react";
+import { signin } from "../api/api";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    const tokens = await signin({
+      email,
+      password,
+    });
+
+    console.log(tokens);
+    localStorage.setItem("token", tokens.access_token); // Save token to local storage
   };
 
   return (

@@ -1,14 +1,22 @@
+"use client";
+import Link from "next/link";
+
 import { getAllTasks } from "@/app/api/api";
 import AddTask from "./components/add-task";
 import TodoList from "./components/todo-list";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default async function Page() {
-  const tasks = await getAllTasks();
+export default function Page() {
+  const [tasks, setTasks] = useState([]);
+
+  const loadTasks = async () => {
+    const tasks = await getAllTasks(`${localStorage.getItem("token")}`);
+    setTasks(tasks as any);
+  };
 
   return (
     <section className="max-w-4xl mx-auto mt-4">
-      <div>
+      <div className="navbar bg-base-100 w-full flex justify-center space-x-10">
         <Link href="/signin" legacyBehavior>
           <a>Sign In</a>
         </Link>
@@ -16,6 +24,10 @@ export default async function Page() {
           <a>Sign Up</a>
         </Link>
       </div>
+
+      <button className="btn btn-primary" onClick={loadTasks}>
+        Load Tasks
+      </button>
 
       {tasks ? (
         <main className="max-w-4xl mx-auto mt-4">

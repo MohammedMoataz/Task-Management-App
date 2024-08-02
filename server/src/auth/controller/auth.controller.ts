@@ -21,6 +21,7 @@ import { CreateUserInterceptor } from 'src/interceptors/user.interceptor'
 import { AuthService } from '../service/auth.service'
 import { LocalGuard } from '../guards/local.guard'
 import { JwtAuthGuard } from '../guards/jwt.guard'
+import { plainToClass } from 'class-transformer'
 
 @Controller()
 export class AuthController {
@@ -45,7 +46,10 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @UseInterceptors(CreateUserInterceptor)
   async signup(@Body() signUpDto: SignUpDto): Promise<Tokens> {
-    return this.authService.signUp(signUpDto)
+    const newUser = plainToClass(SignUpDto, signUpDto)
+    console.log(newUser)
+
+    return this.authService.signUp(newUser)
   }
 
   @Post('signin')

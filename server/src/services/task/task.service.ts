@@ -1,5 +1,5 @@
 import { Model, Types } from 'mongoose'
-import { Injectable, Dependencies } from '@nestjs/common'
+import { Injectable, Dependencies, NotFoundException } from '@nestjs/common'
 import { getModelToken, InjectModel } from '@nestjs/mongoose'
 import { plainToClass } from 'class-transformer'
 
@@ -27,10 +27,11 @@ export class TaskService {
     return newTask
   }
 
-  async findAll(): Promise<TaskSchema[]> {
-    const tasks = await this.taskModel.find().exec()
-    if (!tasks || tasks.length === 0) throw new Error('Task not found')
+  async findAll(userId: string): Promise<TaskSchema[]> {
+    const tasks = await this.taskModel.find({ owner: userId }).exec()
+    if (!tasks || tasks.length === 0) throw new NotFoundException('Tasks not found')
 
+    console.log({ tasks })
     return tasks
   }
 
