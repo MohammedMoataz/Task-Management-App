@@ -1,8 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  RequestMethod
-} from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { config } from 'dotenv'
@@ -29,5 +25,4 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as string
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [PassportModule, JwtModule, AuthService],
 })
-export class AuthModule {
-}
+export class AuthModule { }

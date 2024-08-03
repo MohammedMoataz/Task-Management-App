@@ -1,5 +1,5 @@
 "use client";
-import {  useState } from "react";
+import { useState } from "react";
 import { signUp } from "../api/api";
 
 const SignUp = () => {
@@ -9,13 +9,21 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [linkedinUrl, setLinkedinUrl] = useState("");
 
+  /**
+   * Handle the form submission for sign up.
+   *
+   * @param {React.FormEvent} e - The form submission event.
+   * @return {Promise<void>} - A promise that resolves when the function completes.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
+    // Make a request to the sign up API endpoint
     const tokens = await signUp({
       id: "",
       name,
@@ -28,7 +36,7 @@ const SignUp = () => {
     });
 
     console.log(tokens);
-    localStorage.setItem('token', tokens.tokens.access_token); // Save token to local storage
+    localStorage.setItem("token", tokens.access_token); // Save the access token to local storage
   };
 
   return (

@@ -6,16 +6,23 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  /**
+   * Handle the form submission for sign in.
+   *
+   * @param {React.FormEvent} e - The form submission event.
+   * @return {Promise<void>} - A promise that resolves when the function completes.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Call the signin API endpoint with the provided email and password
     const tokens = await signin({
       email,
       password,
     });
 
+    localStorage.setItem("token", tokens.access_token);
     console.log(tokens);
-    localStorage.setItem("token", tokens.access_token); // Save token to local storage
   };
 
   return (

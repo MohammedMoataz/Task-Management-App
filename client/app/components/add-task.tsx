@@ -2,9 +2,9 @@
 
 import { AiOutlinePlus } from "react-icons/ai";
 import Modal from "./modal";
-import { FormEventHandler, useState } from "react";
-import { addTask } from "@/app/api/api";
+import { FormEvent, FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
+import { addTask } from "@/app/api/api";
 
 const AddTask = () => {
   const router = useRouter();
@@ -14,8 +14,17 @@ const AddTask = () => {
   const [category, setCategory] = useState<string>("");
   const [due_date, setDueDate] = useState<Date | string>("");
 
-  const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (e) => {
+  /**
+   * Submit new todo handler
+   * @param {FormEvent<HTMLFormElement>} e - The form event
+   * @return {Promise<void>} - A promise that resolves when the function is complete
+   */
+  const handleSubmitNewTodo: FormEventHandler<HTMLFormElement> = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
+
+    // Create a new task
     await addTask(
       {
         _id: "",
@@ -28,11 +37,17 @@ const AddTask = () => {
       },
       `${localStorage.getItem("token")}`
     );
+
+    // Reset the form fields
     setTitle("");
     setDescription("");
     setCategory("");
     setDueDate("");
+
+    // Close the modal
     setModalOpen(false);
+
+    // Refresh the page
     router.refresh();
   };
 

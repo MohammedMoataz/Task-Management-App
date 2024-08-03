@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEventHandler, useState } from "react";
+import { FormEvent, FormEventHandler, useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import Modal from "./modal";
 import { useRouter } from "next/navigation";
@@ -28,27 +28,55 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     task.due_date
   );
 
-  const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (e) => {
+  /**
+   * Handles the form submission event for editing a task.
+   *
+   * @param {FormEvent} e - The form submission event.
+   * @return {Promise<void>} A promise that resolves when the task is edited
+   * and the page is refreshed.
+   */
+  const handleSubmitEditTodo: FormEventHandler<HTMLFormElement> = async (
+    e: FormEvent
+  ): Promise<void> => {
     e.preventDefault();
-    await editTask(
-      {
-        _id: task._id,
-        title: titleToEdit,
-        description: descriptionToEdit,
-        category: categoryToEdit,
-        completed: completedToEdit,
-        due_date: due_dateToEdit,
-        owner: task.owner,
-      },
-      `${localStorage.getItem("token")}`
-    );
+
+    // Create a new task object with the edited values
+    const editedTask: ITask = {
+      _id: task._id,
+      title: titleToEdit,
+      description: descriptionToEdit,
+      category: categoryToEdit,
+      completed: completedToEdit,
+      due_date: due_dateToEdit,
+      owner: task.owner,
+    };
+
+    // Call the editTask API function with the edited task object and the user's token
+    e.preventDefault();
+    await editTask(editedTask, `${localStorage.getItem("token")}`);
+
+    // Close the edit modal
     setOpenModalEdit(false);
+
+    // Refresh the page to see the updated task
     router.refresh();
   };
 
-  const handleDeleteTask = async (id: string) => {
+  /**
+   * Handles the deletion of a task.
+   *
+   * @param {string} id - The ID of the task to be deleted.
+   * @return {Promise<void>} A promise that resolves when the task is deleted
+   * and the page is refreshed.
+   */
+  const handleDeleteTask = async (id: string): Promise<void> => {
+    // Call the deleteTask API function with the task ID and the user's token.
     await deleteTask(id, `${localStorage.getItem("token")}`);
+
+    // Close the delete modal.
     setOpenModalDeleted(false);
+
+    // Refresh the page to see the updated list of tasks.
     router.refresh();
   };
 
