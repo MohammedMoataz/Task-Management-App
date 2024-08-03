@@ -22,7 +22,6 @@ const SignIn = () => {
     });
 
     localStorage.setItem("token", tokens.access_token);
-    console.log(tokens);
   };
 
   return (

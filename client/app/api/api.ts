@@ -43,7 +43,7 @@ export const getAllTasks = async (token: string): Promise<ITask[]> => {
     },
   })
     .then(res => res.json())
-    .catch(console.error);
+    .catch(err => []);
 }
 
 /**
@@ -55,14 +55,14 @@ export const getAllTasks = async (token: string): Promise<ITask[]> => {
  */
 export const addTask = async (task: ITask, token: string): Promise<void> => {
   const url = `${baseUrl}/task`;
-  const requestOptions = await fetch(`${baseUrl}/task`, {
+  const requestOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(task) // Convert the task object to JSON and include it in the request body
-  });
+  }
 
   const res = await fetch(url, requestOptions);
   const newTask = await res.json();

@@ -57,7 +57,6 @@ export class TaskService {
     // If no tasks are found, throw a NotFoundException
     if (!tasks || tasks.length === 0) throw new NotFoundException('Tasks not found')
 
-    console.log({ tasks })
     return tasks
   }
 

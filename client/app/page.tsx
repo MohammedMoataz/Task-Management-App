@@ -1,13 +1,28 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { getAllTasks } from "@/app/api/api";
 import AddTask from "./components/add-task";
 import TodoList from "./components/todo-list";
-import { useState } from "react";
+import { decodeToken } from "./utils/decodetoken";
+import { setUser } from "@/store";
 
 export default function Page() {
   const [tasks, setTasks] = useState([]);
+  const [user, setUser] = useState({ id: "", name: "" });
+
+  // const dispatch = useDispatch();
+  // const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userInfo = decodeToken(`${token}`);
+    setUser(userInfo);
+  }, []);
+
+  // if (!user) return <div>Loading...</div>;
 
   /**
    * Asynchronously loads all tasks from the server using the user's token
@@ -17,9 +32,7 @@ export default function Page() {
    */
   const loadTasks = async (): Promise<void> => {
     const token: string = localStorage.getItem("token") || "";
-
     const tasks: any = await getAllTasks(`${token}`);
-
     setTasks(tasks);
   };
 
@@ -34,23 +47,21 @@ export default function Page() {
         </Link>
       </div>
 
-      {localStorage.getItem("token") !== null ? (
-        <div>
-          <button className="btn btn-primary" onClick={loadTasks}>
-            Load Tasks
-          </button>
+      <div>
+        <button className="btn btn-primary" onClick={loadTasks}>
+          Load Tasks
+        </button>
 
-          {tasks ? (
-            <main className="max-w-4xl mx-auto mt-4">
-              <div className="text-center my-5 flex flex-col gap-4">
-                <h1 className="text-2xl font-bold">Task Management App</h1>
-                <AddTask />
-              </div>
-              <TodoList tasks={tasks} />
-            </main>
-          ) : null}
-        </div>
-      ) : null}
+        <main className="max-w-4xl mx-auto mt-4">
+          <div className="text-center my-5 flex flex-col gap-4">
+            <h1 className="text-2xl font-bold">
+              Task Management App, Welcome {user.name}
+            </h1>
+            <AddTask id={user.id} />
+          </div>
+          <TodoList tasks={tasks} />
+        </main>
+      </div>
     </section>
   );
 }

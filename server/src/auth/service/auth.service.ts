@@ -41,11 +41,12 @@ export class AuthService {
    */
   async login(loginDto: LoginDto): Promise<Tokens | null> {
     const user = await this.userService.findOneByEmail(loginDto.email)
+      .then(user => user["_doc"])
     if (!user) return null
 
     const isPasswordMatchs = await compareHashedData(
       loginDto.password,
-      user.password,
+      user.password
     )
     if (!isPasswordMatchs) return null
 
@@ -56,7 +57,7 @@ export class AuthService {
     const tokens = await this.getTokens(user)
 
     // Update the refresh token in the database
-    await this.userService.updateRefreshToken(user.id, tokens.refresh_token)
+    await this.userService.updateRefreshToken(user._id, tokens.refresh_token)
 
     // Return the generated tokens
     return tokens
@@ -76,7 +77,6 @@ export class AuthService {
 
       // Generate JWT tokens for the newly created user
       const tokens = await this.getTokens(user)
-      console.log({ user, tokens })
 
       // Update the refresh token in the database for the newly created user
       await this.userService.updateRefreshToken(user._id, tokens.refresh_token)
@@ -101,11 +101,7 @@ export class AuthService {
       .then(user => user['_doc'])
 
     // If the user does not exist, throw an UnauthorizedException
-    if (!user) {
-      throw new UnauthorizedException('User is not authorized')
-    } else {
-      console.log({ user })
-    }
+    if (!user) throw new UnauthorizedException('User is not authorized')
 
     // Decode the refresh token to get the payload
     const verifiesUser = await this.jwtService.decode(refresh_token)
@@ -157,10 +153,9 @@ export class AuthService {
    * @return {Promise<Tokens>} A promise that resolves to an object containing the access and refresh tokens.
    */
   private async getTokens(user: UserSchema | UserDto): Promise<Tokens> {
-    console.log("gg: " + user)
     // Generate the access token asynchronously
     const accessTokenPromise = this.jwtService.signAsync(
-      { user },
+      user,
       {
         expiresIn: '1h',
         secret: ACCESS_TOKEN_SECRET,
@@ -169,7 +164,7 @@ export class AuthService {
 
     // Generate the refresh token asynchronously
     const refreshTokenPromise = this.jwtService.signAsync(
-      { user },
+      user,
       {
         expiresIn: '1h',
         secret: REFRESH_TOKEN_SECRET,
@@ -179,7 +174,7 @@ export class AuthService {
     // Generate both tokens concurrently
     const [accessToken, refreshToken] = await Promise.all([
       accessTokenPromise,
-      refreshTokenPromise,
+      refreshTokenPromise
     ])
 
     return { access_token: accessToken, refresh_token: refreshToken }

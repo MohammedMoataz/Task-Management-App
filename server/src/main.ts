@@ -15,7 +15,7 @@ const PORT = process.env.PORT as string
  *
  * @return {Promise<void>} This function does not return anything.
  */
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule)
   app.useGlobalPipes(new ValidationPipe())
 
@@ -28,3 +28,5 @@ async function bootstrap() {
   // Start the server and listen on the specified port
   await app.listen(PORT)
 }
+
+bootstrap()

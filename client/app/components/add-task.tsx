@@ -6,7 +6,11 @@ import { FormEvent, FormEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
 import { addTask } from "@/app/api/api";
 
-const AddTask = () => {
+interface IdProps {
+  id: string;
+}
+
+const AddTask: React.FC<IdProps> = ({ id }) => {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
@@ -25,7 +29,7 @@ const AddTask = () => {
     e.preventDefault();
 
     // Create a new task
-    await addTask(
+    const result = await addTask(
       {
         _id: "",
         title,
@@ -33,7 +37,7 @@ const AddTask = () => {
         category,
         completed: false,
         due_date,
-        owner: "66abf260ab73f99a5c7232b4",
+        owner: `${id}`,
       },
       `${localStorage.getItem("token")}`
     );

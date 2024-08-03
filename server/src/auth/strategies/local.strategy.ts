@@ -21,7 +21,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
     // Call the AuthService's login method to validate the user's credentials
     const user = await this.authService.login({ email, password })
-    console.log({ user })
 
     // Throw an UnauthorizedException if the user is not found
     if (!user) throw new UnauthorizedException()

@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt'
 import { config } from 'dotenv'
 
 config()
-
 const SALT_ROUNDS = process.env.SALT_ROUNDS as string
 
 /**
@@ -52,4 +51,7 @@ export const hashData = async (
 export const compareHashedData = async (
   data: string,
   encrypted: string,
-): Promise<boolean> => await bcrypt.compare(data, encrypted)
+): Promise<boolean> => {
+  console.log({ data, encrypted })
+  return await bcrypt.compare(data, encrypted)
+}

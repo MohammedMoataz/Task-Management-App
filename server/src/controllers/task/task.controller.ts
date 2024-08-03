@@ -29,7 +29,7 @@ export class TaskController {
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
   async getTasks(@Req() req: Request): Promise<TaskSchema[]> {
-    const user = req.user["payload"]
+    const user = req.user
     return this.taskService.findAll(user["_id"])
   }
 
@@ -50,7 +50,7 @@ export class TaskController {
     const newTask = plainToClass(CreateTaskDto, req.body)
     console.log(newTask)
 
-    const user = req.user["payload"]
+    const user = req.user
 
     return this.taskService.create(newTask, user["_id"])
   }
