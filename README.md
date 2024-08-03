@@ -14,23 +14,23 @@ Before you begin, ensure you have the following installed on your machine:
 ### Server
 
 Create a `.env` file in the `server` directory and add the following environment variables:
-
-```env
-# NODE APP ENVIRONMENT VARIABLES
-NODE_ENV=development
-PORT=your-server-port
-
-# DATABASE CONNECTION ENVIRONMENT VARIABLES
-APP_NAME=task
-DB_HOST=localhost
-DB_NAME=task-management
-DB_USER=mohammedmoataz
-DB_PASSWORD=vbaP2JwBpqAHDKUe
-
-# SECURITY
-ACCESS_TOKEN_SECRET=your-access-token-secret
-REFRESH_TOKEN_SECRET=your-refresh-token-secret
-SALT_ROUNDS=your-salt-rounds
+   ```bash
+   # NODE APP ENVIRONMENT VARIABLES
+   NODE_ENV=development
+   PORT=your-server-port
+   
+   # DATABASE CONNECTION ENVIRONMENT VARIABLES
+   APP_NAME=task
+   DB_HOST=localhost
+   DB_NAME=task-management
+   DB_USER=mohammedmoataz
+   DB_PASSWORD=vbaP2JwBpqAHDKUe
+   
+   # SECURITY
+   ACCESS_TOKEN_SECRET=your-access-token-secret
+   REFRESH_TOKEN_SECRET=your-refresh-token-secret
+   SALT_ROUNDS=your-salt-rounds
+   ```
 
 ## Running the Server
 
@@ -50,7 +50,7 @@ SALT_ROUNDS=your-salt-rounds
    # or
    yarn start:dev
 
-The server should now be running on http://localhost:[SERVER_POR].
+The server should now be running on http://localhost:[SERVER_PORT].
 
 ## Running the Client
 
